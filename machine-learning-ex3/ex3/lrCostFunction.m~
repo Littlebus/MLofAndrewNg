@@ -35,17 +35,13 @@ grad = zeros(size(theta));
 %           temp(1) = 0;   % because we don't add anything for j = 0  
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
-% disp(X);
-% disp(theta);
 temp1 = X * theta;
-temp1 = 1./(1+exp(-temp1));
-% disp(temp1);
+temp1 = 1/(1+exp(-temp1));
 J = sum(-y.*log(temp1)-(1-y).*log(1-temp1))/m;
-thetat = theta.^2;
-thetat = thetat(2:size(thetat,1),:);
-J = J + lambda*sum(thetat)/(2*m);
-grad = X'*(temp1-y)/m;
-grad = grad + [0;lambda * theta(2:size(theta,1),:) / m] ;
+J = J + lambda*theta
+grad = sum(T'*(temp1-y))/m;
+
+
 
 
 
@@ -55,6 +51,6 @@ grad = grad + [0;lambda * theta(2:size(theta,1),:) / m] ;
 
 % =============================================================
 
-% grad = grad(:);
+grad = grad(:);
 
 end
