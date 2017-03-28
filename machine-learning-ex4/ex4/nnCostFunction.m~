@@ -68,8 +68,7 @@ end
 one = ones(1,m)
 z2 = Theta1 * [one; X'];
 h_layer = sigmoid(z2);
-h_layer = [one; h_layer]
-out_layer = Theta2 * h_layer;
+out_layer = Theta2 * [one; h_layer];
 out_layer = sigmoid(out_layer);
 t1 = -log(out_layer);
 t2 = -log(1-out_layer);
@@ -80,26 +79,17 @@ T2 = Theta2(:,2:size(Theta2,2));
 T1 = T1.^2;
 T2 = T2.^2;
 J = J + 0.5 * lambda * ( sum(T1(:)) +sum(T2(:))) /m;
-delta3 = out_layer - y_v;
-delta2 = (Theta2'*delta3);
-delta2 = delta2(2:size(delta2,1),:).*sigmoidGradient(z2);
+delta3 = out_layer - y;
+delta2 = Theta2'*delta3.*sigmoidGradient(z2);
 Delta2 = zeros(size(Theta2));
-Delta1 = zeros(size(Theta1));
-input_layer = [one; X']
-% input_layer = sigmoid(input_layer);
-
+Delta1 = 
 for i = 1:size(delta3,2)
-    Delta2 = Delta2 + delta3(:,i)*h_layer(:,i)';
+    Delta2 = Delta2 + delta3(:,i)*h_layer';
 end
 for i = 1:size(delta2,2)
-    Delta1 = Delta1 + delta2(:,i)*input_layer(:,i)';
-end
-theta1_zero = zeros(size(Theta1,1),1);
-theta2_zero = zeros(size(Theta2,1),1);
-Theta1_t = [theta1_zero Theta1(:,2:size(Theta1,2))];
-Theta2_t = [theta2_zero Theta2(:,2:size(Theta2,2))];
-Theta1_grad = Delta1./m+Theta1_t*lambda/m;
-Theta2_grad = Delta2./m+Theta2_t*lambda/m;
+    Delta1 = Delta1 + delta2(2:size(delta2,1),i)*sigmoid(X);
+Delta2 = delta3*h_layer';
+Delta1 = 
 
 
 
